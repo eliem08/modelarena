@@ -1,0 +1,7 @@
+[
+  {"model": "Atlas-1", "lab": "Helix Labs", "date": "2026-01-10", "scores": {"SWE-bench": 61.2, "GPQA": 71.0, "ARC-AGI": 18.0}},
+  {"model": "Nova-2", "lab": "Orbit AI", "date": "2026-03-02", "scores": {"SWE-bench": 64.8, "GPQA": 69.5, "ARC-AGI": 22.5}},
+  {"model": "Atlas-1.5", "lab": "Helix Labs", "date": "2026-05-20", "scores": {"SWE-bench": 66.0, "GPQA": 74.2}},
+  {"model": "Kite", "lab": "Open Fieldwork", "date": "2026-07-14", "scores": {"SWE-bench": 58.0, "GPQA": 66.0, "ARC-AGI": 25.1}},
+  {"model": "Nova-3", "lab": "Orbit AI", "date": "2026-10-01", "scores": {"SWE-bench": 72.4, "GPQA": 73.9, "ARC-AGI": 31.0}}
+]
