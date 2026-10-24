@@ -28,7 +28,9 @@ def main(argv=None):
         for r in bs["rows"]:
             prev = "-" if r["prev_best"] is None else f"{r['prev_best']:g}"
             delta = "-" if r["delta"] is None else f"{r['delta']:+.1f}"
-            print(f"{r['benchmark']:<12}{r['score']:>8g}{prev:>11}{delta:>8}  {r['prev_holder'] or '-'}{'  RECORD' if r['record'] else ''}")
+            print(
+                f"{r['benchmark']:<12}{r['score']:>8g}{prev:>11}{delta:>8}  {r['prev_holder'] or '-'}{'  RECORD' if r['record'] else ''}"
+            )
     else:
         st = standings(feed, date.fromisoformat(a.as_of) if a.as_of else None)
         print(f"Standings as of {st['as_of']}")

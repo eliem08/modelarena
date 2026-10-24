@@ -1,4 +1,5 @@
 """Box scores, records, standings and recaps for model launches."""
+
 from __future__ import annotations
 
 from collections import defaultdict
@@ -28,13 +29,36 @@ def box_score(feed: list[dict], model: str) -> dict:
         prev = [(i["scores"][bench], i) for i in prior if bench in i["scores"]]
         if prev:
             best, holder = max(prev, key=lambda p: p[0])
-            rows.append({"benchmark": bench, "score": score, "prev_best": best, "prev_holder": holder["model"],
-                         "prev_lab": holder["lab"], "delta": round(score - best, 2), "record": score > best})
+            rows.append(
+                {
+                    "benchmark": bench,
+                    "score": score,
+                    "prev_best": best,
+                    "prev_holder": holder["model"],
+                    "prev_lab": holder["lab"],
+                    "delta": round(score - best, 2),
+                    "record": score > best,
+                }
+            )
         else:
-            rows.append({"benchmark": bench, "score": score, "prev_best": None, "prev_holder": None,
-                         "prev_lab": None, "delta": None, "record": True})
-    return {"model": launch["model"], "lab": launch["lab"], "date": launch["date"].isoformat(), "rows": rows,
-            "records": sum(r["record"] for r in rows)}
+            rows.append(
+                {
+                    "benchmark": bench,
+                    "score": score,
+                    "prev_best": None,
+                    "prev_holder": None,
+                    "prev_lab": None,
+                    "delta": None,
+                    "record": True,
+                }
+            )
+    return {
+        "model": launch["model"],
+        "lab": launch["lab"],
+        "date": launch["date"].isoformat(),
+        "rows": rows,
+        "records": sum(r["record"] for r in rows),
+    }
 
 
 def standings(feed: list[dict], as_of: date | None = None) -> dict:
@@ -48,11 +72,20 @@ def standings(feed: list[dict], as_of: date | None = None) -> dict:
             if bench in i["scores"] and i["date"] <= as_of and (best is None or i["scores"][bench] > best[0]):
                 best = (i["scores"][bench], i)
                 reign.append((i["date"], i))
-        for (start, holder), nxt in zip(reign, reign[1:] + [(as_of, None)]):
+        for (start, holder), nxt in zip(reign, [*reign[1:], (as_of, None)]):
             days[holder["lab"]] += (nxt[0] - start).days
         if best:
-            holders[bench] = {"model": best[1]["model"], "lab": best[1]["lab"], "score": best[0], "since": reign[-1][0].isoformat()}
-    return {"as_of": as_of.isoformat(), "titles": holders, "days_at_one": dict(sorted(days.items(), key=lambda kv: -kv[1]))}
+            holders[bench] = {
+                "model": best[1]["model"],
+                "lab": best[1]["lab"],
+                "score": best[0],
+                "since": reign[-1][0].isoformat(),
+            }
+    return {
+        "as_of": as_of.isoformat(),
+        "titles": holders,
+        "days_at_one": dict(sorted(days.items(), key=lambda kv: -kv[1])),
+    }
 
 
 def recap(feed: list[dict], model: str) -> str:
@@ -70,9 +103,13 @@ def recap(feed: list[dict], model: str) -> str:
     plays = []
     for r in records:
         steal = "steals the crown from" if r["prev_lab"] != bs["lab"] else "breaks its own lab's record held by"
-        plays.append(f"On {r['benchmark']}, {bs['model']} posts {r['score']:g}, {steal} {r['prev_holder']} ({r['prev_best']:g}).")
+        plays.append(
+            f"On {r['benchmark']}, {bs['model']} posts {r['score']:g}, {steal} {r['prev_holder']} ({r['prev_best']:g})."
+        )
     for r in misses:
-        plays.append(f"{r['benchmark']} stays with {r['prev_holder']}: {r['score']:g} falls {abs(r['delta']):.1f} short.")
+        plays.append(
+            f"{r['benchmark']} stays with {r['prev_holder']}: {r['score']:g} falls {abs(r['delta']):.1f} short."
+        )
     for r in bs["rows"]:
         if r["delta"] is None:
             plays.append(f"First-ever {r['benchmark']} mark on the board: {r['score']:g}.")

@@ -1,5 +1,7 @@
 # model-sportscenter
 
+[![CI](https://github.com/eliem08/model-sportscenter/actions/workflows/ci.yml/badge.svg)](https://github.com/eliem08/model-sportscenter/actions/workflows/ci.yml)
+
 > **ESPN for AI** — every model launch covered like a big game.
 
 Model launches are the Super Bowl of tech Twitter, but coverage is a mess of
@@ -32,3 +34,26 @@ model-sportscenter boxscore examples/launches.json "Nova-3"
 - Daily video recap (pairs with hyperframes) and push alerts ("BREAKING: new SOTA")
 - Fantasy league: draft models, score points from benchmark wins
 - Betting-style prediction markets on next launch (education only)
+
+## Development
+
+Zero runtime dependencies; Python 3.10+.
+
+```bash
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -e ".[dev]"
+python -m unittest discover -s tests -t .           # unit + CLI smoke tests
+ruff check . && ruff format --check .               # lint + format
+```
+
+```
+model_sportscenter/core.py       domain logic (pure, importable, fully tested)
+model_sportscenter/__main__.py   CLI (`model-sportscenter ...` / `python -m model_sportscenter ...`)
+tests/                unit tests + generated CLI smoke tests
+examples/             sample inputs used by the docs and smoke tests
+```
+
+CI runs lint and tests on Ubuntu and Windows across Python 3.10, 3.12 and 3.13.
+Design, data model, trade-offs and production path: **[ARCHITECTURE.md](ARCHITECTURE.md)**.
+
+Part of the [agent-economy](https://github.com/eliem08/agent-economy) portfolio (idea #11).
