@@ -9,6 +9,8 @@ __all__ = ["load_feed", "box_score", "standings", "recap"]
 
 
 def load_feed(items: list[dict]) -> list[dict]:
+    if not isinstance(items, list) or not all(isinstance(i, dict) for i in items):
+        raise ValueError("feed must be a JSON list of launch objects")
     feed = [{**i, "date": date.fromisoformat(i["date"])} for i in items]
     return sorted(feed, key=lambda i: i["date"])
 
