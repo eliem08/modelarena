@@ -11,7 +11,7 @@ import pathlib
 import tempfile
 import unittest
 
-from model_sportscenter.__main__ import main
+from modelarena.__main__ import main
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 COMMANDS = [

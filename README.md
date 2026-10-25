@@ -1,15 +1,45 @@
-# model-sportscenter
+<!-- sell-kit:start -->
+# ModelArena
 
-[![CI](https://github.com/eliem08/model-sportscenter/actions/workflows/ci.yml/badge.svg)](https://github.com/eliem08/model-sportscenter/actions/workflows/ci.yml)
+[![CI](https://github.com/eliem08/modelarena/actions/workflows/ci.yml/badge.svg)](https://github.com/eliem08/modelarena/actions/workflows/ci.yml)
 
-> **ESPN for AI** — every model launch covered like a big game.
+> **Every AI model launch covered like a big game: box scores, records and recaps.**
 
-Model launches are the Super Bowl of tech Twitter, but coverage is a mess of
-screenshots and vibes. `model-sportscenter` turns a launch feed into sports
-coverage: box scores, records broken, lab standings, title streaks and a
-ready-to-post recap.
+**Who it's for:** AI newsletters, media sites and developer-relations teams.
 
-## What the MVP does
+**The problem:** Model launches are a firehose of benchmark claims with no consistent scorekeeping or history.
+
+**What you get:** Launch box scores, all-time records, title reigns and auto-written recaps from a simple launch feed.
+
+## Quickstart
+
+Customers receive a release archive with the wheel and the examples. Python 3.10+ and no other dependencies.
+
+```bash
+pip install modelarena-0.1.0-py3-none-any.whl
+modelarena recap examples/launches.json Nova-3
+modelarena boxscore examples/launches.json Nova-3
+modelarena standings examples/launches.json --as-of 2026-10-24
+```
+
+## Pricing
+
+Every plan starts with a 14-day free trial. Prices in USD, billed monthly unless noted.
+
+| Plan | Price | Includes |
+|---|---|---|
+| **Creator** | $19 per month | Recaps and box scores; Standings; Personal use |
+| **Publisher** | $99 per month | Commercial use; Embeddable standings; Records and reigns |
+| **Media** | $499 per month | Unlimited outlets; Custom metrics; Priority support |
+
+To start a trial or buy a plan, email **sales@YOUR-DOMAIN.com**.
+
+## Licence
+
+Proprietary. Copyright (c) 2026 eliem08. All rights reserved. Use requires a paid plan or an active trial; see [LICENSE](LICENSE).
+<!-- sell-kit:end -->
+
+## What it does
 
 - **Launch feed** (JSON): model, lab, date, benchmark scores
 - **Box score** for any launch vs. the previous best on every benchmark
@@ -23,9 +53,9 @@ ready-to-post recap.
 
 ```bash
 pip install -e .
-model-sportscenter recap examples/launches.json "Nova-3"
-model-sportscenter standings examples/launches.json --as-of 2026-10-24
-model-sportscenter boxscore examples/launches.json "Nova-3"
+modelarena recap examples/launches.json "Nova-3"
+modelarena standings examples/launches.json --as-of 2026-10-24
+modelarena boxscore examples/launches.json "Nova-3"
 ```
 
 ## Roadmap
@@ -47,8 +77,8 @@ ruff check . && ruff format --check .               # lint + format
 ```
 
 ```
-model_sportscenter/core.py       domain logic (pure, importable, fully tested)
-model_sportscenter/__main__.py   CLI (`model-sportscenter ...` / `python -m model_sportscenter ...`)
+modelarena/core.py       domain logic (pure, importable, fully tested)
+modelarena/__main__.py   CLI (`modelarena ...` / `python -m modelarena ...`)
 tests/                unit tests + generated CLI smoke tests
 examples/             sample inputs used by the docs and smoke tests
 ```

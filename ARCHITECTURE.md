@@ -1,4 +1,4 @@
-# Architecture — model-sportscenter
+# Architecture — modelarena
 
 ## 1. Scope
 Sports-style coverage of model launches: box scores, records, standings, title reigns, recaps.

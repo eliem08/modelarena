@@ -3,7 +3,7 @@ import pathlib
 import unittest
 from datetime import date
 
-from model_sportscenter import box_score, load_feed, recap, standings
+from modelarena import box_score, load_feed, recap, standings
 
 FEED = load_feed(
     json.loads((pathlib.Path(__file__).resolve().parent.parent / "examples" / "launches.json").read_text())

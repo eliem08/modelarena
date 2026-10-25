@@ -9,7 +9,7 @@ from .core import box_score, load_feed, recap, standings
 
 
 def _run(argv=None):
-    ap = argparse.ArgumentParser(prog="model-sportscenter")
+    ap = argparse.ArgumentParser(prog="modelarena")
     sub = ap.add_subparsers(dest="cmd", required=True)
     for name in ("recap", "boxscore"):
         p = sub.add_parser(name)
