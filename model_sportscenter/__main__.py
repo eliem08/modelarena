@@ -1,12 +1,14 @@
 import argparse
+import csv
 import json
+import os
 import sys
 from datetime import date
 
 from .core import box_score, load_feed, recap, standings
 
 
-def main(argv=None):
+def _run(argv=None):
     ap = argparse.ArgumentParser(prog="model-sportscenter")
     sub = ap.add_subparsers(dest="cmd", required=True)
     for name in ("recap", "boxscore"):
@@ -17,7 +19,7 @@ def main(argv=None):
     s.add_argument("feed")
     s.add_argument("--as-of")
     a = ap.parse_args(argv)
-    with open(a.feed, encoding="utf-8") as fh:
+    with open(a.feed, encoding="utf-8-sig") as fh:
         feed = load_feed(json.load(fh))
     if a.cmd == "recap":
         print(recap(feed, a.model))
@@ -40,6 +42,23 @@ def main(argv=None):
         for lab, d in st["days_at_one"].items():
             print(f"  {lab:<16} {d}")
     return 0
+
+
+def main(argv=None):
+    """Run the CLI; a bad input file or argument exits 2 with a one-line error instead of a traceback.
+
+    Set AGENT_ECONOMY_DEBUG=1 to see the full traceback.
+    """
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(errors="replace")
+    try:
+        return _run(argv)
+    except (OSError, ValueError, KeyError, csv.Error) as e:
+        if os.environ.get("AGENT_ECONOMY_DEBUG"):
+            raise
+        msg = e.args[0] if isinstance(e, KeyError) and e.args else e
+        print(f"error: {msg}", file=sys.stderr)
+        return 2
 
 
 if __name__ == "__main__":
