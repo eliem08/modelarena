@@ -8,7 +8,7 @@ from datetime import date
 from .core import box_score, load_feed, recap, standings
 
 
-def _run(argv=None):
+def build_parser():
     ap = argparse.ArgumentParser(prog="modelarena")
     sub = ap.add_subparsers(dest="cmd", required=True)
     for name in ("recap", "boxscore"):
@@ -18,6 +18,11 @@ def _run(argv=None):
     s = sub.add_parser("standings")
     s.add_argument("feed")
     s.add_argument("--as-of")
+    return ap
+
+
+def _run(argv=None):
+    ap = build_parser()
     a = ap.parse_args(argv)
     with open(a.feed, encoding="utf-8-sig") as fh:
         feed = load_feed(json.load(fh))

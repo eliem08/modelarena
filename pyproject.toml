@@ -23,6 +23,7 @@ dev = ["ruff>=0.6"]
 
 [project.scripts]
 modelarena = "modelarena.__main__:main"
+modelarena-web = "modelarena.web:main"
 
 [project.urls]
 Repository = "https://github.com/eliem08/modelarena"
