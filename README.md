@@ -47,7 +47,7 @@ Every plan starts with a 14-day free trial. Prices in USD, billed monthly unless
 | **Publisher** | $99 per month | Commercial use; Embeddable standings; Records and reigns |
 | **Media** | $499 per month | Unlimited outlets; Custom metrics; Priority support |
 
-To start a trial or buy a plan, email **sales@YOUR-DOMAIN.com**.
+To start a trial or buy a plan, [request access](https://github.com/eliem08/modelarena/issues/new?title=ModelArena%20trial&labels=sales).
 
 ## Licence
 
