@@ -41,3 +41,22 @@ and a static site generator + email (Resend) + social posting workers. Push aler
 ## 6. Risks
 Benchmark contamination and self-reporting. Mitigate by showing provenance badges and running
 independent eval partners. Brand and trademark: the name and visuals must not imply ESPN affiliation.
+
+## 7. Limitations (sell-ready audit, 2026-10-28)
+- No feature gating by plan: every API key unlocks the same software. Publisher's
+  embeddable standings are not built — the web app sends `X-Frame-Options:
+  DENY`, so it cannot be framed into another site — and were removed from sales
+  copy. Media's unlimited outlets are not enforced (no outlet accounts).
+- The sample feed in examples/launches.json is illustrative, not real results
+  (README already says this); a buyer must supply their own feed, and scores
+  are taken at face value — there is no verification, provenance, or source
+  field in the current feed schema, despite the roadmap mentioning it.
+- Live ingest, video recaps, push alerts, fantasy league, and prediction
+  markets are roadmap, not shipped.
+- Docker build and a live Render/Fly deployment were not verified in the audit
+  environment (no Docker binary there); Dockerfile, render.yaml, and fly.toml are
+  the same template shape as vibe-lube, but a deployment claim remains
+  "not verified" until one is made.
+- Stripe prices were not verified against a live Stripe account in this run;
+  checkout and revocation are covered in tests with mocked Stripe calls, and the
+  README example now uses creator/publisher/media plan keys to match the plan names.
