@@ -48,7 +48,7 @@ To sell self-serve, set four variables and point a Stripe webhook at `https://<y
 |---|---|
 | `STRIPE_SECRET_KEY` | `sk_live_...` |
 | `STRIPE_WEBHOOK_SECRET` | `whsec_...` |
-| `STRIPE_PRICES` | `team=price_123,business=price_456` |
+| `STRIPE_PRICES` | `creator=price_123,publisher=price_456,media=price_789` |
 | `PUBLIC_URL` | `https://modelarena.example.com` |
 
 Buyers pick a plan on `/pricing`, pay on Stripe Checkout and see their API key once on the success page. Cancelling the subscription revokes the key. A selling server always requires a key.
@@ -60,10 +60,12 @@ Every plan starts with a 14-day free trial. Prices in USD, billed monthly unless
 | Plan | Price | Includes |
 |---|---|---|
 | **Creator** | $19 per month | Recaps and box scores; Standings; Personal use |
-| **Publisher** | $99 per month | Commercial use; Embeddable standings; Records and reigns |
-| **Media** | $499 per month | Unlimited outlets; Custom metrics; Priority support |
+| **Publisher** | $99 per month | Everything in Creator; Commercial use; Records and reigns |
+| **Media** | $499 per month | Everything in Publisher; Custom metrics; Priority support |
 
 To start a trial or buy a plan, [request access](https://github.com/eliem08/modelarena/issues/new?title=ModelArena%20trial&labels=sales).
+
+Plan note, owner decision on merge: there is no feature gating by plan in the code — every API key unlocks the same software (recap, box score, standings). Publisher's embeddable standings are not built — the web app deliberately sends `X-Frame-Options: DENY`, so it cannot be framed into another site — and have been removed from the sales copy; an embeddable widget would need a hosted-feed feature that does not exist yet. Media's unlimited outlets are not enforced (there are no outlet accounts), and personal vs. commercial use is a licence distinction, not a code gate. Custom metrics are real in one sense: any benchmark key in your feed JSON becomes a title in standings.
 
 ## Licence
 
@@ -105,6 +107,7 @@ python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\act
 pip install -e ".[dev]"
 python -m unittest discover -s tests -t .           # unit + CLI smoke tests
 ruff check . && ruff format --check .               # lint + format
+python -m pip wheel . --no-deps -w dist            # customer wheel, as in Quickstart
 ```
 
 ```
