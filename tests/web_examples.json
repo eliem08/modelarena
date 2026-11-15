@@ -1,5 +1,45 @@
 [
  {
+  "op": "launch-add",
+  "payload": {
+   "model": "Atlas-1",
+   "lab": "Helix Labs",
+   "date": "2026-01-10",
+   "score": [
+    "SWE-bench=61.2"
+   ],
+   "source": "https://example.com/atlas-1"
+  }
+ },
+ {
+  "op": "launch-add",
+  "payload": {
+   "model": "Nova-2",
+   "lab": "Orbit AI",
+   "date": "2026-03-02",
+   "score": [
+    "SWE-bench=64.8"
+   ],
+   "source": "https://example.com/nova-2"
+  }
+ },
+ {
+  "op": "story",
+  "payload": {
+   "model": "Nova-2"
+  }
+ },
+ {
+  "op": "league",
+  "payload": {
+   "as_of": "2026-04-01"
+  }
+ },
+ {
+  "op": "launches",
+  "payload": {}
+ },
+ {
   "op": "recap",
   "payload": {
    "feed": {

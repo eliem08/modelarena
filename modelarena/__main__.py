@@ -6,6 +6,7 @@ import sys
 from datetime import date
 
 from .core import box_score, load_feed, recap, standings
+from .ops import OPS, add_ops, run_ops
 
 
 def build_parser():
@@ -18,12 +19,15 @@ def build_parser():
     s = sub.add_parser("standings")
     s.add_argument("feed")
     s.add_argument("--as-of")
+    add_ops(sub)
     return ap
 
 
 def _run(argv=None):
     ap = build_parser()
     a = ap.parse_args(argv)
+    if a.cmd in OPS:
+        return run_ops(a)
     with open(a.feed, encoding="utf-8-sig") as fh:
         feed = load_feed(json.load(fh))
     if a.cmd == "recap":

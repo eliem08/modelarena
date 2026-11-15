@@ -91,6 +91,20 @@ modelarena standings examples/launches.json --as-of 2026-10-24
 modelarena boxscore examples/launches.json "Nova-3"
 ```
 
+## Run your own desk
+
+Keep your own launch feed and publish from it. Every launch carries the link its numbers came from.
+
+```bash
+modelarena launch-add Nova-2 --lab "Orbit AI" --date 2026-03-02 --score SWE-bench=64.8 --source https://example.com/nova-2
+modelarena story Nova-2          # headline, plays, box score and source
+modelarena league                # title holders and days at number one
+modelarena launch-remove Nova-2  # a retraction
+modelarena export                # the feed as JSON, for syndication
+```
+
+The feed lives in `feed.json` (or `--store`, or `MODELARENA_STORE`).
+
 ## Roadmap
 
 - Live ingest from lab blogs, arXiv, leaderboards (LMArena, SWE-bench, ARC)
