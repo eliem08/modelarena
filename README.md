@@ -105,9 +105,23 @@ modelarena export                # the feed as JSON, for syndication
 
 The feed lives in `feed.json` (or `--store`, or `MODELARENA_STORE`).
 
+### Don't miss a launch
+
+```bash
+modelarena discover --labs meta-llama,mistralai,Qwen,google --since 2026-11-01 --add-scored
+```
+
+- `discover` checks the public Hugging Face models API for new language models from the labs you follow that
+  are not on the feed yet. It takes a few seconds even for several labs, so it suits a daily scheduled job.
+- A model whose card publishes benchmark results goes straight onto the feed with `--add-scored`, sourced to its
+  model page.
+- Most big labs publish their numbers in a blog post or paper instead of the card. Those come back with a
+  ready-to-run `launch-add` line, with lab, date and source filled in, so a person only types the scores.
+- Models outside Hugging Face (closed APIs) still need `launch-add` by hand.
+
 ## Roadmap
 
-- Live ingest from lab blogs, arXiv, leaderboards (LMArena, SWE-bench, ARC)
+- Score extraction from lab blogs and papers; leaderboards (LMArena, SWE-bench, ARC)
 - Daily video recap (pairs with hyperframes) and push alerts ("BREAKING: new SOTA")
 - Fantasy league: draft models, score points from benchmark wins
 - Betting-style prediction markets on next launch (education only)

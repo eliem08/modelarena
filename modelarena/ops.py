@@ -9,8 +9,9 @@ import os
 from datetime import date
 
 from .core import box_score, load_feed, recap, standings
+from .hf import discover
 
-OPS = ("launch-add", "launch-remove", "launches", "story", "league", "export")
+OPS = ("discover", "launch-add", "launch-remove", "launches", "story", "league", "export")
 
 
 class DeskError(ValueError):
@@ -50,6 +51,14 @@ def scores(items) -> dict:
 
 def add_ops(sub):
     store = os.environ.get("MODELARENA_STORE", "feed.json")
+    p = sub.add_parser("discover", help="find new launches on Hugging Face from the labs you follow")
+    p.add_argument(
+        "--labs", required=True, help="Hugging Face organisations, comma-separated, e.g. meta-llama,mistralai"
+    )
+    p.add_argument("--since", required=True, help="only models created on or after YYYY-MM-DD")
+    p.add_argument("--min-likes", type=int, default=0)
+    p.add_argument("--any-task", action="store_true", help="include non-text models (default: language models)")
+    p.add_argument("--add-scored", action="store_true", help="put models whose card publishes scores on the feed")
     p = sub.add_parser("launch-add", help="record a model launch and its benchmark scores")
     p.add_argument("model")
     p.add_argument("--lab", required=True)
@@ -79,7 +88,38 @@ def run_ops(a) -> int:
 
 def _run(items: list[dict], a):
     c = a.cmd
-    if c == "launch-add":
+    if c == "discover":
+        try:
+            date.fromisoformat(a.since)
+        except ValueError:
+            raise DeskError(f"{a.since!r} is not a date like 2026-12-01") from None
+        labs = [x.strip() for x in a.labs.split(",") if x.strip()]
+        if not 1 <= len(labs) <= 20:
+            raise DeskError("--labs takes 1 to 20 organisations")
+        on_feed = {i["model"].lower() for i in items}
+        found = discover(labs, a.since, on_feed, max(0, a.min_likes), a.any_task)
+        added = 0
+        for f in found:
+            if f["scores"] and a.add_scored:
+                items.append({k: f[k] for k in ("model", "lab", "date", "scores", "source")})
+                added += 1
+                print(f"added   {f['date']}  {f['model']}  ({len(f['scores'])} scores from its model card)")
+            elif f["scores"]:
+                print(
+                    f"scored  {f['date']}  {f['model']}  ({len(f['scores'])} scores in its card; --add-scored adds it)"
+                )
+            else:
+                print(
+                    f"new     {f['date']}  {f['model']}  ({f['likes']} likes) - scores not in the card; once published:"
+                )
+                print(
+                    f'        modelarena launch-add "{f["model"]}" --lab {f["lab"]} --date {f["date"]} '
+                    f"--source <link to the numbers> --score <benchmark>=<score>"
+                )
+        if added:
+            save(items, a.store)
+        print(f"{len(found)} new model(s) from {', '.join(labs)} since {a.since}; {added} added to the feed")
+    elif c == "launch-add":
         if any(i["model"].lower() == a.model.lower() for i in items):
             raise DeskError(f"{a.model} is already on the feed; remove it first to correct it")
         try:
